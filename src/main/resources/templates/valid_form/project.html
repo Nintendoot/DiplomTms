@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <title>Valid Project</title>
+</head>
+<body>
+<div class="container" style="max-width: 800px;width: 1000px;margin-top: 50px" th:object="${updateProject}">
+    <p class="text-center" th:text="|Progect ID: ${updateProject.id}|"></p>
+    <div class="mb-3">
+        <label for="project-title-label" class="form-label">Title</label>
+        <input type="text" class="form-control" id="project-title-label" name="title"
+               th:value="${updateProject.title}">
+        <p th:errors="*{title}" style="color: crimson"></p>
+    </div>
+    <div class="mb-3">
+        <label for="project-shortName-label" class="form-label">Shortname</label>
+        <input type="text" class="form-control" id="project-shortName-label" name="shortName"
+               th:value="${updateProject.shortName}">
+        <p th:errors="*{shortName}" style="color: red"></p>
+    </div>
+    <div class="col-md-4">
+        <label for="project-projectStatus-label" class="form-label">Description</label>
+        <input type="text" class="form-control" id="project-projectStatus-label" name="projectStatus"
+               th:value="${updateProject.projectStatus}">
+    </div>
+    <div class="mb-3">
+        <label for="project-description-label" class="form-label">Description</label>
+        <input type="text" class="form-control" id="project-description-label" name="description"
+               th:value="${updateProject.description}">
+        <p th:errors="*{description}" style="color: red"></p>
+    </div>
+    <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
+        <form th:action="@{|/project/view/${updateProject.id}|}" method="get">
+            <div class="col-12">
+                <button type="submit" class="btn btn-secondary btn-sm">Try Again</button>
+            </div>
+        </form>
+    </div>
+    <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
+        <form th:action="@{/home}" method="get">
+            <div class="col-12">
+                <button type="submit" class="btn btn-secondary btn-sm">Home</button>
+            </div>
+        </form>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
+        crossorigin="anonymous"></script>
+</body>
+</html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <title>Work page</title>
+</head>
+<body>
+<header th:insert="_head.html"></header>
+<div class="container">
+    <h3 class="text-center">My Task</h3>
+    <div class="row" style="border-right-color: black;margin-top: 50px">
+
+        <div class="col-sm">
+            <h4>NOT STARTED</h4>
+            <tr th:each="us:${notStarted}" style="margin-top: 20px">
+                <div class="card" style="width: 12rem;">
+                    <div class="card-body">
+                        <h3 th:text="${us.title}"></h3>
+                        <p th:text="|Priority :${us.priority.getIteam()}|"></p>
+                        <form th:action="@{|/task/${us.id}/createComment|}" th:method="get">
+                            <div class="col-sm-12">
+                                <button type="submit" class="btn btn-secondary btn-sm">ADD Comment</button>
+                            </div>
+                        </form>
+                        <form th:action="@{|/project/${us.project.id}/task/${us.id}|}" th:method="get">
+                            <div class="col-sm-12">
+                                <button type="submit" class="btn btn-secondary btn-sm">Open</button>
+                            </div>
+                        </form>
+                        <form th:action="@{|/task/${us.id}/${us.taskStatus.getName()}|}" th:method="post">
+                            <div class="col-sm-12">
+                                <button type="submit" class="btn btn-secondary btn-sm">Work</button>
+                            </div>
+                        </form>
+
+                        </p>
+                    </div>
+                </div>
+            </tr>
+        </div>
+
+
+        <div class="col-sm">
+            <h4>IN PROGRESS</h4>
+            <tr th:each="us:${inProgress}" style="margin-top: 20px">
+                <div class="card" style="width: 12rem;">
+                    <div class="card-body">
+                        <h3 th:text="${us.title}"></h3>
+                        <p th:text="|Priority :${us.priority.getIteam()}|"></p>
+                        <form th:action="@{|/task/${us.id}/createComment|}" th:method="get">
+                            <div class="col-sm-12">
+                                <button type="submit" class="btn btn-secondary btn-sm">ADD Comment</button>
+                            </div>
+                        </form>
+                        <form th:action="@{|/project/${us.project.id}/task/${us.id}|}" th:method="get">
+                            <div class="col-sm-12">
+                                <button type="submit" class="btn btn-secondary btn-sm">Open</button>
+                            </div>
+                        </form>
+                        <form th:action="@{|/task/${us.id}/${us.taskStatus.getName()}|}" th:method="post">
+                            <div class="col-sm-12">
+                                <button type="submit" class="btn btn-secondary btn-sm">Check</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </tr>
+        </div>
+
+        <div class="col-sm">
+            <h4>CHECKING</h4>
+            <tr th:each="us:${checking}" style="margin-top: 20px">
+                <div class="card" style="width: 12rem;">
+                    <div class="card-body">
+                        <h3 th:text="${us.title}"></h3>
+                        <p th:text="|Priority :${us.priority.getIteam()}|"></p>
+                        <form th:action="@{|/task/${us.id}/createComment|}" th:method="get">
+                            <div class="col-sm-12">
+                                <button type="submit" class="btn btn-secondary btn-sm">ADD Comment</button>
+                            </div>
+                        </form>
+                        <form th:action="@{|/project/${us.project.id}/task/${us.id}|}" th:method="get">
+                            <div class="col-sm-12">
+                                <button type="submit" class="btn btn-secondary btn-sm">Open</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </tr>
+        </div>
+
+
+        <div class="col-sm">
+            <h4>COMPLETED</h4>
+            <tr th:each="us:${completed}" style="margin-top: 20px">
+                <div class="card" style="width: 12rem;">
+                    <div class="card-body">
+                        <h3 th:text="${us.title}"></h3>
+                        <p th:text="|Priority:${us.priority.getIteam()}|"></p>
+                        <p th:text="|Description:${us.description}|"></p>
+                        <form th:action="@{|/project/${us.project.id}/task/${us.id}|}" th:method="get">
+                            <div class="col-sm-12">
+                                <button type="submit" class="btn btn-secondary btn-sm">Open</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </tr>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+
+    <div th:if="${!postponed.isEmpty()}">
+        <h4>POSTPONED TASK</h4>
+        <tr th:each="us:${postponed}">
+            <div class="card" style="width: 12rem;">
+                <div class="card-body">
+                    <h3 th:text="${us.title}"></h3>
+                    <p th:text="${us.priority.getIteam()}"></p>
+                    <p th:text="${us.description}"></p>
+                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                </div>
+            </div>
+        </tr>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
+        crossorigin="anonymous"></script>
+</body>
+</html>

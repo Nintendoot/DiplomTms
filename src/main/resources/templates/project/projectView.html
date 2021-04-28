@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <title>Create Project</title>
+</head>
+<body>
+<header th:insert="_head.html"></header>
+<div class="container" style="max-width: 800px;width: 1000px;margin-top: 50px">
+    <form th:action="@{/project}" th:method="post" th:object="${newProject}">
+        <div class="mb-3">
+            <label for="project-title-label" class="form-label">Title</label>
+            <input type="text" class="form-control" id="project-title-label" name="title" placeholder="Title">
+            <p th:errors="*{title}" style="color: red"></p>
+        </div>
+        <div class="mb-3">
+            <label for="project-shortName-label" class="form-label">Shortname</label>
+            <input type="text" class="form-control" id="project-shortName-label" name="shortName"
+                   placeholder="Short Name">
+            <p th:errors="*{shortName}" style="color: red"></p>
+        </div>
+        <div class="mb-3">
+            <label for="project-description-label" class="form-label">Description</label>
+            <textarea class="form-control" id="project-description-label" name="description" rows="3"></textarea>
+            <p th:errors="*{description}" style="color: red"></p>
+        </div>
+        <div class="col-sm-12">
+            <button type="submit" class="btn btn-secondary btn-sm">Create</button>
+        </div>
+    </form>
+    <div class="position-relative">
+        <form th:action="@{/home}" method="get">
+            <div class="position-absolute top-0 end-0">
+                <button type="submit" class="btn btn-secondary btn-sm">Home</button>
+            </div>
+        </form>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
+        crossorigin="anonymous"></script>
+</body>
+</html>

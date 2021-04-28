@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <title>Task page</title>
+</head>
+<body>
+<header th:insert="_head.html"></header>
+<div class="container" style="max-width: 1200px;width: 1000px;margin-top: 50px" sec:authorize="hasRole('Manager')">
+    <div class="row table-bordered">
+        <div class="col-sm-8">
+            <form th:action="@{|/project/${idPr}/task/${idT}|}" th:method="post"
+                  th:object="${updateTask}">
+                <p class="text-center" th:text="|Task ID: ${task.id}|"></p>
+                <p class="text-center" th:text="|Create Time: ${task.dateStart}|"></p>
+                <div class="mb-3">
+                    <label for="task-title-label" class="form-label">Title</label>
+                    <input type="text" class="form-control" id="task-title-label" name="title"
+                           th:value="${task.title}">
+                </div>
+                <div class="col-md-4">
+                    <label for="task-priority-label" class="form-label">Priority</label>
+                    <select id="task-priority-label" class="form-select" name="priority">
+                        <a th:each="pr: ${priority}">
+                            <option th:text="${pr.getIteam()}" th:value="${pr}"></option>
+                        </a>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label for="task-taskStatus-label" class="form-label">Task status</label>
+                    <select id="task-taskStatus-label" class="form-select" name="taskStatus">
+                        <a th:each="tas: ${taskStatus}">
+                            <div th:if="${tas.equals(tas.COMPLETED)} or ${tas.equals(tas.IN_PROGRESS)}">
+                                <option th:text="${tas}" th:value="${tas}"></option>
+                            </div>
+                        </a>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="task-description-label" class="form-label">Description</label>
+                    <input type="text" class="form-control" id="task-description-label" name="description"
+                           th:value="${task.description}">
+                </div>
+                <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-secondary btn-sm">Update</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-sm-4">
+            <p class="text-center"> USERS TASK</p>
+            <table class="table">
+                <thead>
+                <tr>
+                    <td>Name</td>
+                    <td>Surname</td>
+                    <td>Login</td>
+                </tr>
+                </thead>
+                <tr th:each="u:${task.getUsersTask()}">
+                    <td th:text="${u.name}"></td>
+                    <td th:text="${u.surname}"></td>
+                    <td th:text="${u.login}"></td>
+                    <td>
+                        <form th:action="@{|/project/${idPr}/task/${idT}/deleteUser/${u.id}|}" method="post">
+                            <div class="col-12">
+                                <!--                                <input type="hidden" name="login" th:value="${u.login}">-->
+                                <button type="submit" class="btn btn-secondary btn-sm">Delete</button>
+                            </div>
+                        </form>
+                    </td>
+                </tr>
+            </table>
+            <p class="text-center"> ADD USER IN TASK</p>
+            <form th:action="@{|/project/${idPr}/task/${idT}/addUser|}" method="post">
+                <div class="col-md-4">
+                    <select id="task-users-label" class="form-select" name="login"
+                            style="max-width: 200px;width: 200px">
+                        <a th:each="us: ${projectUsers}">
+                            <option th:text="|${us.getName()} ${us.getSurname()}(${us.login})|"
+                                    th:value="${us.login}"></option>
+                        </a>
+                    </select>
+                </div>
+                <div class="col-12" style="margin-top: 20px">
+                    <button type="submit" class="btn btn-secondary btn-sm">Add User</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <p class="text-center"> Task Comments</p>
+    <table class="table">
+        <thead>
+        <tr>
+            <td>Id</td>
+            <td>Author</td>
+            <td>Text</td>
+        </tr>
+        </thead>
+        <tr th:each="u:${task.comments}">
+            <td th:text="|${u.id} |"></td>
+            <td th:text="|${u.author.name} ${u.author.surname}(${u.author.login})|"></td>
+            <td th:text="|${u.text} |"></td>
+            <td>
+                <form th:action="@{|/task/${u.task.id}/deleteComment/${u.id}|}" method="post">
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-secondary btn-sm">Delete</button>
+                    </div>
+                </form>
+            </td>
+        </tr>
+    </table>
+
+    <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
+        <form th:action="@{|/project/${idPr}/allTask|}" method="get">
+            <div class="col-12">
+                <button type="submit" class="btn btn-secondary btn-sm">Back</button>
+            </div>
+        </form>
+
+        <form th:action="@{/home}" method="get">
+            <div class="col-12">
+                <button type="submit" class="btn btn-secondary btn-sm">Home</button>
+            </div>
+        </form>
+    </div>
+</div>
+</div>
+
+<div class="container" style="max-width: 800px;width: 1000px;margin-top: 50px"
+     sec:authorize="hasAnyRole('Admin','User')">
+    <p class="text-center" th:text="|Task ID: ${task.id}|"></p>
+    <p class="text-center" th:text="|Create Time: ${task.dateStart}|"></p>
+    <p class="text-center" th:text="|End Time: ${task.dateEnd}|"></p>
+    <p class="text-center" th:text="|Description: ${task.description}|"></p>
+    <p class="text-center" th:text="|Task Priority: ${task.priority}|"></p>
+    <p class="text-center" th:text="|Task Status: ${task.taskStatus}|"></p>
+    <p class="text-center" style="margin-top: 50px"> Task Comments</p>
+    <table class="table">
+        <thead>
+        <tr>
+            <td>Id</td>
+            <td>Author</td>
+            <td>Text</td>
+        </tr>
+        </thead>
+        <tr th:each="u:${task.comments}">
+            <td th:text="|${u.id} |"></td>
+            <td th:text="|${u.author.name} ${u.author.surname}(${u.author.login})|"></td>
+            <td th:text="|${u.text} |"></td>
+        </tr>
+    </table>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
+        crossorigin="anonymous"></script>
+</body>
+</html>

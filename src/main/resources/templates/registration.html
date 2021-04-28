@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <title>Registration</title>
+</head>
+<body>
+<div class="container" style="max-width: 800px;width: 1000px;margin-top: 50px">
+    <form th:action="@{/reg}" th:object="${newUser}" method="post" class="row g-3">
+        <h4>REGISTRATION </h4>
+        <div class="col-md-12">
+            <label for="user-name-label" class="form-label">Name</label>
+            <input type="text" class="form-control" id="user-name-label" name="name">
+            <p th:errors="*{name}" style="color: red"></p>
+        </div>
+        <div class="col-md-12">
+            <label for="user-surname-label" class="form-label">Surname</label>
+            <input type="text" class="form-control" id="user-surname-label" name="surname">
+            <p th:errors="*{surname}" style="color: red"></p>
+        </div>
+        <div class="col-12">
+            <label for="user-phone-label" class="form-label">Phone</label>
+            <input type="text" class="form-control" id="user-phone-label" name="phone">
+            <p th:errors="*{phone}" style="color: red"></p>
+        </div>
+        <div class="col-12">
+            <label for="user-email-label" class="form-label">Email</label>
+            <input type="text" class="form-control" id="user-email-label" name="email">
+            <p th:errors="*{email}" style="color: red"></p>
+        </div>
+        <div class="col-12">
+            <label for="user-login-label" class="form-label">Login</label>
+            <input type="text" class="form-control" id="user-login-label" name="login">
+            <p th:errors="*{login}" style="color: red"></p>
+        </div>
+        <div class="col-12">
+            <label for="user-password-label" class="form-label">Password</label>
+            <input type="text" class="form-control" id="user-password-label" name="password">
+            <p th:errors="*{password}" style="color: red"></p>
+        </div>
+        <div class="col-12">
+            <button type="submit" class="btn btn-secondary btn-sm">Register</button>
+        </div>
+    </form>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
+        crossorigin="anonymous"></script>
+</body>
+</html>

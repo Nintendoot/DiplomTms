@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <title>All Users</title>
+</head>
+<body>
+<header th:insert="_head.html"></header>
+<div class="container" style="max-width: 800px;width: 1000px;margin-top: 50px">
+    <h5>All Users</h5>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <td>id</td>
+            <td>Name</td>
+            <td>Surname</td>
+            <td>Login</td>
+            <td>Role</td>
+            <td>Phone</td>
+            <td>Email</td>
+        </tr>
+        </thead>
+        <tr th:each="us:${allUsers}">
+            <td th:text="${us.id}"></td>
+            <td th:text="${us.name}"></td>
+            <td th:text="${us.surname}"></td>
+            <td th:text="${us.login}"></td>
+            <td th:text="${us.role}"></td>
+            <td th:text="${us.phone}"></td>
+            <td th:text="${us.email}"></td>
+            <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group"
+                 sec:authorize="hasRole('Admin')">
+                <td>
+                    <form th:action="@{'/user/'+${us.id}}" method="get">
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-secondary btn-sm">Edit</button>
+                        </div>
+                    </form>
+                </td>
+                <td>
+                    <form th:action="@{'/delete/'+${us.id}}" method="post">
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-secondary btn-sm">Delete</button>
+                        </div>
+                    </form>
+                </td>
+            </div>
+        </tr>
+    </table>
+    <form th:action="@{/home}" method="get">
+        <div class="col-12">
+            <button type="submit" class="btn btn-secondary btn-sm">Home</button>
+        </div>
+    </form>
+</div>
+
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
+        crossorigin="anonymous"></script>
+</body>
+</html>

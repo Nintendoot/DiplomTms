@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <title>All Project</title>
+</head>
+<body>
+<header th:insert="_head.html"></header>
+<div class="container" style="max-width: 800px;width: 1000px;margin-top: 50px">
+    <h5 class="text-center">All My Project</h5>
+    <div sec:authorize="hasRole('Manager')">
+        <table class="table">
+            <thead>
+            <tr>
+                <td>id</td>
+                <td>Short Name</td>
+                <td>Status</td>
+                <td>Create Time</td>
+            </tr>
+            </thead>
+            <th:block th:each="row : ${allProjects}">
+                <div th:if="${!row.key.getIteam().equals('Completed')}">
+                    <tr th:each="us:${row.value}">
+                        <td th:text="${us.id}"></td>
+                        <td th:text="${us.shortName}"></td>
+                        <td th:text="${us.projectStatus.getIteam()}"></td>
+                        <td th:text="${us.creatTime}"></td>
+                        <td>
+                            <form th:action="@{|/project/view/${us.id}|}" method="get">
+                                <div class="col-12">
+                                    <button type="submit" class="btn btn-secondary btn-sm">Open</button>
+                                </div>
+                            </form>
+                        </td>
+                        <td>
+                            <form th:action="@{|/project/delete/${us.id}|}" method="post">
+                                <div class="col-12">
+                                    <button type="submit" class="btn btn-secondary btn-sm">Delete</button>
+                                </div>
+                            </form>
+                        </td>
+                        <td>
+                            <form th:action="@{|/project/${us.id}/allTask|}" method="get">
+                                <div class="col-12">
+                                    <button type="submit" class="btn btn-secondary btn-sm">Task</button>
+                                </div>
+                            </form>
+                        </td>
+                    </tr>
+                </div>
+            </th:block>
+        </table>
+    </div>
+
+    <div sec:authorize="hasRole('User')">
+        <table class="table">
+            <thead>
+            <tr>
+                <td>id</td>
+                <td>Short Name</td>
+                <td>Status</td>
+                <td>Create Time</td>
+            </tr>
+            </thead>
+            <th:block th:each="row : ${allProjects}">
+                <div th:if="${!row.key.equals(row.key.COMPLETED)} and ${!row.key.equals(row.key.NOT_STARTED)}">
+                    <tr th:each="us:${row.value}">
+                        <td th:text="${us.id}"></td>
+                        <td th:text="${us.shortName}"></td>
+                        <td th:text="${us.projectStatus.getIteam()}"></td>
+                        <td th:text="${us.creatTime}"></td>
+                        <td>
+                            <form th:action="@{|/project/${us.id}/user|}" method="get">
+                                <div class="col-12">
+                                    <button type="submit" class="btn btn-secondary btn-sm">Open</button>
+                                </div>
+                            </form>
+                        </td>
+                    </tr>
+                </div>
+            </th:block>
+        </table>
+    </div>
+
+    <div class="container" style="max-width: 800px;width: 1000px;margin-top: 50px"
+         sec:authorize="hasAnyRole('Manager','User')">
+        <h5 class="text-center">Complite Project</h5>
+        <table class="table">
+            <thead>
+            <tr>
+                <td>id</td>
+                <td>Short Name</td>
+                <td>Status</td>
+                <td>Create Time</td>
+                <td>End Time</td>
+            </tr>
+            </thead>
+            <tr th:each="us:${complitedProject}">
+                <td th:text="${us.id}"></td>
+                <td th:text="${us.shortName}"></td>
+                <td th:text="${us.projectStatus}"></td>
+                <td th:text="${us.creatTime}"></td>
+                <td th:text="${us.endTime}"></td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<div class="container" style="max-width: 800px;width: 1000px;margin-top: 50px" sec:authorize="hasRole('Admin')">
+    <h5 class="text-center">All Project</h5>
+    <table class="table">
+        <thead>
+        <tr>
+            <td>id</td>
+            <td>Short Name</td>
+            <td>Owner</td>
+            <td>Status</td>
+            <td>Create Time</td>
+        </tr>
+        </thead>
+        <th:block th:each="row : ${allProjects}">
+            <tr th:each="us:${row.value}">
+                <td th:text="${us.id}"></td>
+                <td th:text="${us.shortName}"></td>
+                <td th:text="${us.owner.login}"></td>
+                <td th:text="${us.projectStatus}"></td>
+                <td th:text="${us.creatTime}"></td>
+                <td>
+                    <form th:action="@{|/project/view/${us.id}|}" method="get">
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-secondary btn-sm">Open</button>
+                        </div>
+                    </form>
+                </td>
+                <td>
+                    <form th:action="@{|/project/${us.id}/allTask|}" method="get">
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-secondary btn-sm">Task</button>
+                        </div>
+                    </form>
+                </td>
+            </tr>
+        </th:block>
+    </table>
+    <form th:action="@{/home}" method="get">
+        <div class="col-12">
+            <button type="submit" class="btn btn-secondary btn-sm">Home</button>
+        </div>
+    </form>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
+        crossorigin="anonymous"></script>
+</body>
+</html>

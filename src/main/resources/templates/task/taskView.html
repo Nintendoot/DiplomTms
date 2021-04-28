@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <title>Create Task</title>
+</head>
+<body>
+<header th:insert="_head.html"></header>
+<div class="container" style="max-width: 800px;width: 1000px;margin-top: 50px">
+    <form th:action="@{|/project/${idP}/newTask|}" method="post" th:object="${newTask}">
+        <div class="mb-3">
+            <label for="task-title-label" class="form-label">Title</label>
+            <input type="text" class="form-control" id="task-title-label" name="title" placeholder="Title">
+            <p th:errors="*{title}" style="color: red"></p>
+        </div>
+        <div class="col-md-4">
+            <label for="task-priority-label" class="form-label">Task Status</label>
+            <select id="task-priority-label" class="form-select" name="priority">
+                <tr th:each="pr: ${priority}">
+                    <option th:text="${pr.getIteam()}" th:value="${pr}"></option>
+                </tr>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="task-description-label" class="form-label">Description</label>
+            <textarea class="form-control" id="task-description-label" name="description" rows="3"></textarea>
+            <p th:errors="*{description}" style="color: red"></p>
+        </div>
+        <div class="col-sm-6">
+            <button type="submit" class="btn btn-secondary btn-sm">Create</button>
+        </div>
+    </form>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
+        crossorigin="anonymous"></script>
+</body>
+</html>

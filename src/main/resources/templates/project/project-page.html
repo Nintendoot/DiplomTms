@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <title>Project page</title>
+</head>
+<body>
+<header th:insert="_head.html"></header>
+<div class="container" style="max-width: 1200px;width: 1000px;margin-top: 50px" sec:authorize="hasRole('Manager')">
+    <div class="row table-bordered">
+        <div class="col-sm-8" style="border-right-color: black">
+            <form th:action="@{|/project/${project.id}/update|}" th:method="post" th:object="${updateProject}">
+                <p class="text-center" th:text="|Progect ID: ${project.id}|"></p>
+                <p class="text-center" th:text="|Create Time: ${project.creatTime}|"></p>
+                <div class="mb-3">
+                    <label for="project-title-label" class="form-label">Title</label>
+                    <input type="text" class="form-control" id="project-title-label" name="title"
+                           th:value="${project.title}">
+                    <td th:errors="*{title}" style="color: red"></td>
+                </div>
+                <div class="mb-3">
+                    <label for="project-shortName-label" class="form-label">Shortname</label>
+                    <input type="text" class="form-control" id="project-shortName-label" name="shortName"
+                           th:value="${project.shortName}">
+                </div>
+                <div class="col-md-4">
+                    <label for="project-projectStatus-label" class="form-label">Project Status</label>
+                    <select id="project-projectStatus-label" class="form-select" name="projectStatus">
+                        <tr th:each="st: ${projectStatus}">
+                            <option th:text="${st.getIteam()}" th:value="${st}"></option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="project-description-label" class="form-label">Description</label>
+                    <input type="text" class="form-control" id="project-description-label" name="description"
+                           th:value="${project.description}">
+                </div>
+
+                <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
+
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-secondary btn-sm">Update</button>
+                        </div>
+
+
+
+                    <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
+                        <form th:action="@{|/project/all|}" method="get">
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-secondary btn-sm">Back</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
+                        <form th:action="@{/home}" method="get">
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-secondary btn-sm">Home</button>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+        <div class="col-sm-4">
+            <p class="text-center"> USERS PROJECT</p>
+            <table class="table">
+                <thead>
+                <tr>
+                    <td>Name</td>
+                    <td>Surname</td>
+                    <td>Login</td>
+                </tr>
+                </thead>
+                <tr th:each="u:${project.getUsers()}">
+                    <td th:text="${u.name}"></td>
+                    <td th:text="${u.surname}"></td>
+                    <td th:text="${u.login}"></td>
+                    <div>
+                        <td>
+                            <form th:action="@{|/project/deleteUser/${project.id}|}" method="post">
+                                <div class="col-12">
+                                    <input type="hidden" name="login" th:value="${u.login}">
+                                    <button type="submit" class="btn btn-secondary btn-sm">Delete</button>
+                                </div>
+                            </form>
+                        </td>
+                    </div>
+                </tr>
+            </table>
+            <div>
+                <p class="text-center"> ADD USER IN PROJECT</p>
+                <form th:action="@{|/project/addUser/${project.id}|}" method="post">
+                    <div class="mb-3">
+                        <label for="project-login-label" class="form-label">User Login</label>
+                        <input type="text" class="form-control" id="project-login-label" name="login">
+                    </div>
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-secondary btn-sm">Add User</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container" style="max-width: 1200px;width: 1000px;margin-top: 50px" sec:authorize="hasRole('Admin')">
+    <p class="text-center" th:text="|Task ID: ${project.id}|"></p>
+    <p class="text-center" th:text="|Owner: ${project.owner.name} ${project.owner.surname}|"></p>
+    <p class="text-center" th:text="|Description: ${project.description}|"></p>
+    <p class="text-center" th:text="|Project Status: ${project.projectStatus}|"></p>
+    <p class="text-center" style="margin-top: 50px"> USERS PROJECT</p>
+    <table class="table">
+        <thead>
+        <tr>
+            <td>Name</td>
+            <td>Surname</td>
+            <td>Login</td>
+        </tr>
+        </thead>
+        <tr th:each="u:${project.getUsers()}">
+            <td th:text="${u.name}"></td>
+            <td th:text="${u.surname}"></td>
+            <td th:text="${u.login}"></td>
+        </tr>
+    </table>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
+        crossorigin="anonymous"></script>
+</body>
+</html>
